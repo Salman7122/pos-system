@@ -420,7 +420,10 @@ function showAddProductModal() {
     const priceUSDInput = document.getElementById('product-price');
     const priceSYPInput = document.getElementById('product-price-syp');
     if (priceUSDInput) priceUSDInput.value = '';
-    if (priceSYPInput) priceSYPInput.value = '';
+    if (priceSYPInput) {
+        priceSYPInput.value = '';
+        priceSYPInput.dataset.priceSYPLocked = 'false'; // إعادة تعيين للمنتجات الجديدة
+    }
 
     const purchaseUSDInput = document.getElementById('purchase-price-usd');
     const purchaseSYPInput = document.getElementById('purchase-price-syp');
@@ -448,6 +451,9 @@ function editProduct(id) {
         document.getElementById('product-quantity').value = product.quantity;
         document.getElementById('product-category').value = product.category || '';
         document.getElementById('price-type').value = product.priceType || 'USD';
+
+        // تعيين حالة القفل من البيانات المحفوظة
+        document.getElementById('product-price-syp').dataset.priceSYPLocked = product.priceSYPLocked ? 'true' : 'false';
 
         // تعبئة سعر الشراء
         const purchaseUSDInput = document.getElementById('purchase-price-usd');
@@ -514,6 +520,8 @@ function saveProduct(e) {
         computedUSD = (typeof convertSYPToUSD === 'function') ? convertSYPToUSD(priceSYP) : (priceSYP / exchangeRate);
     }
 
+    const priceSYPLocked = document.getElementById('product-price-syp').dataset.priceSYPLocked === 'true';
+
     const productData = {
         name: document.getElementById('product-name').value,
         description: document.getElementById('product-description').value,
@@ -523,8 +531,8 @@ function saveProduct(e) {
         quantity: quantity,
         category: document.getElementById('product-category').value,
         priceType: priceType,
-        // اجعل السعر غير مقفل دائماً لكي يتأثر بسعر الصرف لاحقاً
-        priceSYPLocked: false,
+        // حفظ حالة القفل بناءً على ما إذا كان المستخدم أدخل السعر بالليرة
+        priceSYPLocked: priceSYPLocked,
         // أسعار الشراء
         purchasePriceUSD: isNaN(purchaseUSD) ? null : parseFloat(purchaseUSD.toFixed(2)),
         purchasePriceSYP: isNaN(purchaseSYP) ? null : parseFloat(purchaseSYP.toFixed(2))
@@ -602,6 +610,8 @@ function closeModal() {
     const priceUSDInput = document.getElementById('product-price');
     const priceSYPInput = document.getElementById('product-price-syp');
     if (priceUSDInput) priceUSDInput.value = '';
-    if (priceSYPInput) priceSYPInput.value = '';
-    if (priceSYPInput) priceSYPInput.dataset.priceSYPLocked = 'false'; // إعادة تعيين حالة القفل
+    if (priceSYPInput) {
+        priceSYPInput.value = '';
+        priceSYPInput.dataset.priceSYPLocked = 'false'; // إعادة تعيين حالة القفل
+    }
 }
