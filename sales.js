@@ -347,6 +347,9 @@ function completeSale() {
     updateCartDisplay();
     document.getElementById('paid-amount').value = '';
 
+    // إعادة تحميل بيانات البيع لتحديث الكميات
+    loadSalesData();
+
     showMessage('تم إتمام البيع بنجاح', 'success');
 }
 

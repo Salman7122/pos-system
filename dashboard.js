@@ -20,6 +20,25 @@ function formatCurrencySYP(amount) {
     }).format(amount);
 }
 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-SY', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+
+function convertSYPToUSD(sypAmount) {
+    const exchangeRate = parseFloat(localStorage.getItem('exchangeRate')) || 1;
+    return sypAmount / exchangeRate;
+}
+
+function getTaxRate() {
+    const settings = JSON.parse(localStorage.getItem('settings')) || {};
+    return settings.taxRate || 0;
+}
+
 function loadDashboard() {
     const content = document.getElementById('page-content');
     content.innerHTML = `

@@ -32,9 +32,14 @@ function loadCustomers() {
                 </table>
             </div>
         </div>
+    `;
 
-        <!-- نافذة إضافة/تعديل العميل -->
-        <div id="customer-modal" class="modal">
+    // إضافة النوافذ المنبثقة إلى الجسم إذا لم تكن موجودة
+    if (!document.getElementById('customer-modal')) {
+        const customerModal = document.createElement('div');
+        customerModal.id = 'customer-modal';
+        customerModal.className = 'modal';
+        customerModal.innerHTML = `
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 id="customer-modal-title">إضافة عميل جديد</h3>
@@ -63,10 +68,15 @@ function loadCustomers() {
                     </div>
                 </form>
             </div>
-        </div>
+        `;
+        document.body.appendChild(customerModal);
+    }
 
-        <!-- نافذة تفاصيل العميل -->
-        <div id="customer-details-modal" class="modal">
+    if (!document.getElementById('customer-details-modal')) {
+        const detailsModal = document.createElement('div');
+        detailsModal.id = 'customer-details-modal';
+        detailsModal.className = 'modal';
+        detailsModal.innerHTML = `
             <div class="modal-content large">
                 <div class="modal-header">
                     <h3>تفاصيل العميل</h3>
@@ -76,8 +86,9 @@ function loadCustomers() {
                     <!-- سيتم ملؤها ديناميكياً -->
                 </div>
             </div>
-        </div>
-    `;
+        `;
+        document.body.appendChild(detailsModal);
+    }
 
     loadCustomersData();
     setupCustomerEventListeners();
